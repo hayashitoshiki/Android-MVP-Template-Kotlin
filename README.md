@@ -1,5 +1,5 @@
 # Android-MVP-Template-Kotlin
-Android用 MVPテンプレート
+Android用 MVPテンプレート for Koin
 ## セットアップ
 以下に配置  
 Windows  
@@ -52,9 +52,19 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.example.sample.R
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 import com.example.sample.contact.SampleContact
 
+/*
+ *  DI用クラスに以下の１行を追加してください
+ */
+factory <SampleContact.Presenter>{ (v: SampleContact.View) -> SamplePresenter(v) }
+
+
 class SampleFragment : Fragment(), SampleContact.View {
+
+    private val presenter: Sample1Contact.Presenter by inject { parametersOf(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,9 +123,44 @@ fragment_sample.xml
 ![](https://github.com/teaTreeTree/Android-MVP-Template-Kotlin/blob/master/MVPTemplateFragment/screenshot/02.png)  
 ➂  
 ![](https://github.com/teaTreeTree/Android-MVP-Template-Kotlin/blob/master/MVPTemplateFragment/screenshot/03.png)
+
+④  
+DI用クラスとして以下のようなDI用クラスを生成  
+```
+package com.example.tosik.musicdictionary_androlid.di
+
+import android.app.Application
+import com.example.tosik.musicdictionary_androlid.contact.*
+import com.example.tosik.musicdictionary_androlid.presenter.*
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+import org.koin.core.module.Module
+import org.koin.dsl.module
+
+class MyApplication: Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+
+        startKoin{
+            androidContext(applicationContext)
+            modules(module)
+        }
+    }
+
+    // Koinモジュール
+    private val module: Module = module  {
+        factory <SampleContact.Presenter>{ (v: SampleContact.View) -> SamplePresenter(v) }
+    }
+
+
+}
+```
+クラス生成毎に```factory <●●●Contact.Presenter>{ (v: ●●●Contact.View) -> ●●●Presenter(v) }```を追加する  
 ##  環境
 AndroidX  
-Kotlin
+Kotlin  
+Koin
 
 ##  テンプレートのカスタマイズ
 ####  クラス
