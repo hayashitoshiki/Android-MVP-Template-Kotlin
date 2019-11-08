@@ -122,3 +122,6 @@ Kotlin
 ```Android-MVP-Template-Kotlin/MVPTemplateFragment/root/src/app_package```以下該当するクラスを編集  
 #### レイアウト
 ```Android-MVP-Template-Kotlin/MVPTemplateFragment/root/res/layout/fragment_layout.xml.ftl```を編集
+
+##  更新履歴
+・Koin(DIライブラリ)適用版作成 ```use-koin``` ：2019/11/9
